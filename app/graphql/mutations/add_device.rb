@@ -26,7 +26,7 @@ class Mutations::AddDevice < GraphQL::Function
     salt = RbNaCl::Random.random_bytes(RbNaCl::PasswordHash::SCrypt::SALTBYTES)
     opslimit = 2**20
     memlimit = 2**24
-    digest_size = 64
+    digest_size = 32
     digest = RbNaCl::PasswordHash.scrypt(password, salt, opslimit, memlimit, digest_size)
     encoded_digest = Base64.encode64(digest)
     device = user.devices.create(name: d_name, master_password:encoded_digest)
