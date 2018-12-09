@@ -26,11 +26,9 @@ class Mutations::AddDevice < GraphQL::Function
     digest_size = 64
     digest = RbNaCl::PasswordHash.scrypt(password, salt, opslimit, memlimit, digest_size)
     encoded_digest = Base64.encode64(digest)
-    print "[debug] encoded_digest= ", encoded_digest, "\n"
     device = user.devices.create(name: d_name, master_password:encoded_digest)
     return unless device
 
-    print "[debug] ", device, "\n"
     OpenStruct.new({id: device.id, name: device.name})
   end
 end
