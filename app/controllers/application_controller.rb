@@ -3,8 +3,8 @@ class ApplicationController < ActionController::API
 		variables = ensure_hash(params[:variables])
 		query = params[:query]
 		context = {
-		# Query context goes here, for example:
-		# current_user: current_user,
+			current_user: current_user,
+			session: session
 		}
 		result = OtpBackupSchema.execute(query, variables: variables, context: context)
 		render json: result
@@ -29,4 +29,13 @@ def ensure_hash(ambiguous_param)
 	else
 		raise ArgumentError, "Unexpected parameter: #{ambiguous_param}"
 	end
+end
+
+def current_user
+	return nil if request.headers['Authorization'].blank?
+	
+	token = request.headers['Authorization'].split(' ').last
+	return nil if token.blank?
+	
+	AuthToken.user_from_token(token)
 end
