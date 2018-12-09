@@ -14,7 +14,10 @@ class Mutations::AddDevice < GraphQL::Function
 
   def call(user, args, ctx)
     user = ctx[:current_user]
-    return unless user
+
+    if user.blank?
+      raise GraphQL::ExecutionError.new("Authentication required")
+    end
 
     d_name = args[:name]
     password = args[:password]
