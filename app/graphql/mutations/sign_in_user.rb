@@ -14,7 +14,7 @@ class Mutations::SignInUser < GraphQL::Function
   def call(user, args, ctx)
     email = args[:email]
     password = args[:password]
-    return unless email && password
+    return unless email and password
 
     user = User.find_by(email: email)
     return unless user

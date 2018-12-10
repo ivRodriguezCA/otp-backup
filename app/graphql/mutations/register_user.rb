@@ -7,7 +7,7 @@ class Mutations::RegisterUser < GraphQL::Function
   def call(user, args, ctx)
     email = args[:email]
     password = args[:password]
-    return unless email && password
+    return unless email and password
 
     if not User.find_by(email: email).blank?
       raise GraphQL::ExecutionError.new("User already exists.")

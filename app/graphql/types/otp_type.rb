@@ -5,7 +5,7 @@ Types::OtpType = GraphQL::ObjectType.define do
   field :account, types.String
   field :secret, types.String
   field :device do
-    type Types::UserType
+    type Types::DeviceType
     resolve -> (otp, args, ctx) {
       otp.device
     }

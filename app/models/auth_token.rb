@@ -11,7 +11,8 @@ module AuthToken
     return if token.blank?
 
     user_id = crypt.decrypt_and_verify(token).gsub(PREFIX, '').to_i
-    User.find_by id: user_id
+    User.find_by(id: user_id)
+
   rescue ActiveSupport::MessageVerifier::InvalidSignature
     nil
   end
