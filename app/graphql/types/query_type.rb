@@ -8,13 +8,14 @@ Types::QueryType = GraphQL::ObjectType.define do
 
       type types[Types::OtpType]
       resolve -> (obj, args, ctx) {
-        if ctx[:current_user].blank?
+        user = ctx[:current_user]
+        if user.blank?
           raise GraphQL::ExecutionError.new("Authentication required.")
         end
 
         device_id = args[:device_id]
-        device = Device.find_by(id: device_id)
-        if not device
+        device = user.devices.find_by(id: device_id)
+        if device.blank?
           raise GraphQL::ExecutionError.new("Unknown device.")
         end
 
